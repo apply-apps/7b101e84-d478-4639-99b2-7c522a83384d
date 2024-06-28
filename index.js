@@ -1,43 +1,33 @@
 // Filename: index.js
 // Combined code from all files
 
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const workouts = [
-    { id: '1', name: 'Push-ups', description: 'Do 3 sets of 15 repetitions' },
-    { id: '2', name: 'Squats', description: 'Do 4 sets of 20 repetitions' },
-    { id: '3', name: 'Plank', description: 'Hold for 1 minute' },
-    { id: '4', name: 'Burpees', description: 'Do 3 sets of 10 repetitions' },
-    { id: '5', name: 'Lunges', description: 'Do 3 sets of 20 repetitions (10 each leg)' },
-];
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-const WorkoutList = () => {
-    const renderItem = ({ item }) => (
-        <View style={styles.itemContainer}>
-            <Text style={styles.itemTitle}>{item.name}</Text>
-            <Text style={styles.itemDescription}>{item.description}</Text>
-            <TouchableOpacity onPress={() => alert("Workout Completed: " + item.name)} style={styles.button}>
-                <Text style={styles.buttonText}>Mark as Done</Text>
-            </TouchableOpacity>
-        </View>
-    );
+const LetterDisplay = () => {
+    const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
+
+    const showNextLetter = () => {
+        setCurrentLetterIndex((prevIndex) => (prevIndex + 1) % letters.length);
+    };
 
     return (
-        <FlatList
-            data={workouts}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.list}
-        />
+        <View style={styles.letterContainer}>
+            <Text style={styles.letter}>{letters[currentLetterIndex]}</Text>
+            <TouchableOpacity onPress={showNextLetter} style={styles.button}>
+                <Text style={styles.buttonText}>Next Letter</Text>
+            </TouchableOpacity>
+        </View>
     );
 };
 
 export default function App() {
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.header}>Workout Tracker</Text>
-            <WorkoutList />
+            <Text style={styles.header}>Learn to Read!</Text>
+            <LetterDisplay />
         </SafeAreaView>
     );
 }
@@ -46,40 +36,31 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     header: {
         fontSize: 32,
         fontWeight: 'bold',
-        textAlign: 'center',
-        margin: 20,
+        marginBottom: 20,
     },
-    list: {
-        paddingHorizontal: 16,
+    letterContainer: {
+        alignItems: 'center',
     },
-    itemContainer: {
-        marginVertical: 10,
-        padding: 20,
-        backgroundColor: '#f9f9f9',
-        borderRadius: 10,
-        elevation: 3,
-    },
-    itemTitle: {
-        fontSize: 20,
+    letter: {
+        fontSize: 100,
         fontWeight: 'bold',
-    },
-    itemDescription: {
-        marginVertical: 10,
-        fontSize: 16,
+        marginBottom: 50,
     },
     button: {
-        marginTop: 10,
-        paddingVertical: 10,
         backgroundColor: '#007BFF',
-        borderRadius: 5,
+        paddingVertical: 20,
+        paddingHorizontal: 40,
+        borderRadius: 10,
     },
     buttonText: {
-        textAlign: 'center',
         color: '#fff',
+        fontSize: 20,
         fontWeight: 'bold',
     },
 });
